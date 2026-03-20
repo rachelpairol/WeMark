@@ -104,7 +104,7 @@ export function Header() {
             href="#shop"
             className="hidden sm:inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-lg"
           >
-            Customize Yours
+            {t("hero.cta.shop")}
           </a>
         </div>
       </div>

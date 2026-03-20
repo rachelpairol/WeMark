@@ -10,13 +10,16 @@ import type { Product } from "@/components/cart-context"
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart()
-  const { t, locale } = useI18n()
+  const { t } = useI18n()
 
   const categoryKey = `category.${product.category}` as Parameters<typeof t>[0]
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-all hover:shadow-lg">
-      <Link href={`/product/${product.id}`} className="relative aspect-square overflow-hidden">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-[4px] hover:shadow-xl">
+      <Link
+        href={`/product/${product.id}`}
+        className="relative aspect-[4/4.2] overflow-hidden bg-muted"
+      >
         <Image
           src={product.image || "/placeholder.svg"}
           alt={product.name}
@@ -24,28 +27,33 @@ export function ProductCard({ product }: { product: Product }) {
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-foreground/0 transition-colors group-hover:bg-foreground/5" />
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/5" />
       </Link>
-      <div className="flex flex-1 flex-col p-4">
-        <span className="text-xs font-medium uppercase tracking-wider text-primary">
+
+      <div className="flex flex-1 flex-col p-5">
+        <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
           {t(categoryKey)}
         </span>
+
         <Link href={`/product/${product.id}`}>
-          <h3 className="mt-1 font-serif text-lg font-semibold text-foreground leading-snug hover:text-primary transition-colors">
+          <h3 className="mt-3 font-serif text-xl font-semibold leading-snug text-foreground transition-colors hover:text-primary">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
           {product.description}
         </p>
-        <div className="mt-auto flex items-center justify-between pt-4">
-          <span className="text-xl font-serif font-bold text-foreground">
+
+        <div className="mt-auto flex items-center justify-between pt-5">
+          <span className="text-2xl font-serif font-bold text-foreground">
             ${product.price}
           </span>
+
           <Button
             size="sm"
             onClick={() => addToCart(product)}
-            className="gap-2"
+            className="gap-2 font-semibold transition-all duration-200 hover:-translate-y-[2px] hover:shadow-lg"
           >
             <ShoppingBag className="h-4 w-4" />
             {t("product.addToCart")}
