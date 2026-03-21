@@ -53,7 +53,7 @@ export function HeroSection() {
               <div className="space-y-4">
                 <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-lg">
                   <Image
-                    src="/images/3-IMG_2883 (1).jpg"
+                    src="/Images/3-IMG_2883 (1).jpg"
                     alt="Shadow box with paper roses phrase"
                     fill
                     className="object-cover"
@@ -63,7 +63,7 @@ export function HeroSection() {
                 </div>
                 <div className="relative aspect-square overflow-hidden rounded-lg shadow-lg">
                   <Image
-                    src="/images/2-Frase.jpg"
+                    src="/Images/2-Frase.jpg"
                     alt="Valentine's Day personalized couples photo box"
                     fill
                     className="object-cover"
@@ -74,7 +74,7 @@ export function HeroSection() {
               <div className="space-y-4 pt-8">
                 <div className="relative aspect-square overflow-hidden rounded-lg shadow-lg">
                   <Image
-                    src="/images/1-mom-shadow-box-roses.jpg"
+                    src="/Images/1-mom-shadow-box-roses.jpg"
                     alt="MOM shadow box with LED lights"
                     fill
                     className="object-cover"
@@ -83,7 +83,7 @@ export function HeroSection() {
                 </div>
                 <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-lg">
                   <Image
-                    src="/images/IMG_2875.jpg"
+                    src="/Images/IMG_2875.jpg"
                     alt="Custom shadow box with paper roses"
                     fill
                     className="object-cover"

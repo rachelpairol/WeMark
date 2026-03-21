@@ -38,7 +38,7 @@ export default function AboutPage() {
               <div className="flex-1 relative w-full max-w-md">
                 <div className="relative aspect-square overflow-hidden rounded-xl shadow-lg">
                   <Image
-                    src="/images/mom-shadow-box.jpeg"
+                    src="/Images/mom-shadow-box-roses.jpeg"
                     alt="WeMark handcrafted shadow box close-up"
                     fill
                     className="object-cover"

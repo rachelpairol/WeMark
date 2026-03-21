@@ -16,7 +16,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="inline-block">
               <Image
-                src="/images/wemark-logo.png"
+                src="/Images/WeMark.png"
                 alt="WeMark"
                 width={100}
                 height={100}
