@@ -13,7 +13,7 @@ export function Header() {
       <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-3 sm:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <div className="relative h-28 w-28 -my-4">
+          <div className="relative h-24 w-24 -my-3">
             <Image
               src="/Images/WeMarkLogo2.png"
               alt="WeMark"
