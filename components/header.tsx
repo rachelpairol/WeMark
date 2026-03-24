@@ -10,15 +10,16 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200/70 bg-white/70 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-4 sm:px-6">
+      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-3 sm:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <div className="relative h-14 w-14">
+          <div className="relative h-28 w-28 -my-4">
             <Image
-              src="/Images/WeMarkLogo.png"
+              src="/Images/WeMarkLogo2.png"
               alt="WeMark"
               fill
-              className="object-contain"
+              className="object-contain scale-115 drop-shadow-lg"
+              sizes="96px"
               priority
             />
           </div>
