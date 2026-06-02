@@ -29,19 +29,22 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return []
-    try {
-      const saved = localStorage.getItem("wemark-cart")
-      return saved ? JSON.parse(saved) : []
-    } catch {
-      return []
-    }
-  })
+  const [items, setItems] = useState<CartItem[]>([])
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
-    localStorage.setItem("wemark-cart", JSON.stringify(items))
-  }, [items])
+    try {
+      const saved = localStorage.getItem("wemark-cart")
+      if (saved) setItems(JSON.parse(saved))
+    } catch {}
+    setHydrated(true)
+  }, [])
+
+  useEffect(() => {
+    if (hydrated) {
+      localStorage.setItem("wemark-cart", JSON.stringify(items))
+    }
+  }, [items, hydrated])
 
   const addToCart = (product: Product, customization?: string) => {
     setItems((prev) => {

@@ -4,9 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { useCart } from "@/components/cart-context";
 
 export function Header() {
   const { t, locale, setLocale } = useI18n();
+  const { totalItems } = useCart();
 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200/70 bg-white/70 backdrop-blur">
@@ -90,15 +92,18 @@ export function Header() {
           </div>
 
           {/* Cart */}
-          <button
+          <Link
+            href="/cart"
             className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-background shadow-sm transition hover:bg-muted"
             aria-label="Open cart"
           >
             <ShoppingBag className="h-4 w-4 text-foreground" />
-            <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-border bg-background px-1 text-[11px] text-foreground">
-              0
-            </span>
-          </button>
+            {totalItems > 0 && (
+              <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-border bg-primary px-1 text-[11px] font-semibold text-primary-foreground">
+                {totalItems}
+              </span>
+            )}
+          </Link>
 
           {/* CTA */}
           <a
