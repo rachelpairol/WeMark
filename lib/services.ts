@@ -100,8 +100,8 @@ export const services: Service[] = [
     id: "logo-printing",
     name: "Logos, Vinyl & Stickers",
     nameEs: "Logos, Vinyl y Stickers",
-    description: "Cut your logo or design on vinyl or sticker paper with our Cricut machine. Perfect for brand stickers to seal boxes, envelopes or as thank-you labels.",
-    descriptionEs: "Corta tu logo o diseño en vinyl o papel sticker con nuestra máquina Cricut. Ideal para stickers de marca para cerrar cajas, sobres o como etiquetas de agradecimiento.",
+    description: "Cut your logo or design on vinyl or sticker paper. Perfect for brand stickers to seal boxes, envelopes or as thank-you labels.",
+    descriptionEs: "Corta tu logo o diseño en vinyl o papel sticker. Ideal para stickers de marca para cerrar cajas, sobres o como etiquetas de agradecimiento.",
     image: "/Images/logos.jpg",
     details: [
       "Regular & textile vinyl",
