@@ -5,7 +5,7 @@ import React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Check, Lock } from "lucide-react"
+import { ArrowLeft, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,47 +14,57 @@ import { useI18n } from "@/lib/i18n"
 import { useRouter } from "next/navigation"
 
 export function CheckoutForm() {
-  const { items, totalPrice, clearCart } = useCart()
+  const { items, totalPrice } = useCart()
   const { t } = useI18n()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [orderPlaced, setOrderPlaced] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const shipping = totalPrice >= 100 ? 0 : 12
   const total = totalPrice + shipping
 
-  if (items.length === 0 && !orderPlaced) {
+  if (items.length === 0) {
     router.push("/cart")
     return null
   }
 
-  if (orderPlaced) {
-    return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 py-16 text-center">
-        <div className="flex justify-center mb-6">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-            <Check className="h-8 w-8 text-primary" />
-          </div>
-        </div>
-        <h1 className="font-serif text-3xl font-bold text-foreground">{t("checkout.orderConfirmed")}</h1>
-        <p className="mt-4 text-muted-foreground leading-relaxed">
-          {t("checkout.orderConfirmedDesc")}
-        </p>
-        <Button asChild className="mt-8" size="lg">
-          <Link href="/shop">{t("cart.continueShopping")}</Link>
-        </Button>
-      </div>
-    )
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate order processing
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    clearCart()
-    setOrderPlaced(true)
-    setIsSubmitting(false)
+    setError(null)
+
+    const formData = new FormData(e.currentTarget)
+    const customerInfo = {
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      address: formData.get("address") as string,
+      address2: formData.get("address2") as string,
+      city: formData.get("city") as string,
+      state: formData.get("state") as string,
+      zip: formData.get("zip") as string,
+      country: formData.get("country") as string,
+    }
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items, customerInfo }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong")
+      }
+
+      window.location.href = data.url
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred. Please try again.")
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -80,19 +90,19 @@ export function CheckoutForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="firstName">{t("checkout.firstName")}</Label>
-                <Input id="firstName" required placeholder="Jane" className="mt-1" />
+                <Input id="firstName" name="firstName" required placeholder="Jane" className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="lastName">{t("checkout.lastName")}</Label>
-                <Input id="lastName" required placeholder="Doe" className="mt-1" />
+                <Input id="lastName" name="lastName" required placeholder="Doe" className="mt-1" />
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="email">{t("checkout.email")}</Label>
-                <Input id="email" type="email" required placeholder="jane@example.com" className="mt-1" />
+                <Input id="email" name="email" type="email" required placeholder="jane@example.com" className="mt-1" />
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="phone">{t("checkout.phone")}</Label>
-                <Input id="phone" type="tel" placeholder="(555) 123-4567" className="mt-1" />
+                <Input id="phone" name="phone" type="tel" placeholder="(555) 123-4567" className="mt-1" />
               </div>
             </div>
           </div>
@@ -105,55 +115,45 @@ export function CheckoutForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
                 <Label htmlFor="address">{t("checkout.streetAddress")}</Label>
-                <Input id="address" required placeholder="123 Main St" className="mt-1" />
+                <Input id="address" name="address" required placeholder="123 Main St" className="mt-1" />
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="address2">{t("checkout.apt")}</Label>
-                <Input id="address2" placeholder="Apt 4B" className="mt-1" />
+                <Input id="address2" name="address2" placeholder="Apt 4B" className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="city">{t("checkout.city")}</Label>
-                <Input id="city" required placeholder="Miami" className="mt-1" />
+                <Input id="city" name="city" required placeholder="Miami" className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="state">{t("checkout.state")}</Label>
-                <Input id="state" required placeholder="FL" className="mt-1" />
+                <Input id="state" name="state" required placeholder="FL" className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="zip">{t("checkout.zip")}</Label>
-                <Input id="zip" required placeholder="33101" className="mt-1" />
+                <Input id="zip" name="zip" required placeholder="33101" className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="country">{t("checkout.country")}</Label>
-                <Input id="country" required defaultValue="United States" className="mt-1" />
+                <Input id="country" name="country" required defaultValue="United States" className="mt-1" />
               </div>
             </div>
           </div>
 
-          {/* Payment placeholder */}
+          {/* Payment — handled by Stripe */}
           <div className="rounded-lg border border-border bg-card p-6">
-            <h2 className="font-serif text-xl font-semibold text-foreground mb-4">
+            <h2 className="font-serif text-xl font-semibold text-foreground mb-2">
               {t("checkout.paymentInfo")}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="sm:col-span-2">
-                <Label htmlFor="cardNumber">{t("checkout.cardNumber")}</Label>
-                <Input id="cardNumber" required placeholder="1234 5678 9012 3456" className="mt-1" />
-              </div>
-              <div>
-                <Label htmlFor="expiry">{t("checkout.expiry")}</Label>
-                <Input id="expiry" required placeholder="MM/YY" className="mt-1" />
-              </div>
-              <div>
-                <Label htmlFor="cvc">{t("checkout.cvc")}</Label>
-                <Input id="cvc" required placeholder="123" className="mt-1" />
-              </div>
-            </div>
-            <p className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-              <Lock className="h-3 w-3" />
-              {t("checkout.paymentSecure")}
+            <p className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Lock className="h-4 w-4 text-primary shrink-0" />
+              Your payment details are entered securely on the next step, powered by Stripe.
             </p>
           </div>
+
+          {error && (
+            <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-4 py-3">{error}</p>
+          )}
         </div>
 
         {/* Order Summary */}
@@ -215,8 +215,8 @@ export function CheckoutForm() {
               size="lg"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Processing..." : "Place Order"}
-              {!isSubmitting && <Lock className="h-4 w-4" />}
+              <Lock className="h-4 w-4" />
+              {isSubmitting ? "Redirecting to payment..." : "Proceed to Payment"}
             </Button>
           </div>
         </div>
