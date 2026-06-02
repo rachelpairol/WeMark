@@ -9,7 +9,7 @@ const servicesList = [
   { icon: CreditCard, nameEn: "Business Cards", nameEs: "Tarjetas de Presentación" },
   { icon: Shirt,      nameEn: "Custom T-Shirts", nameEs: "Camisetas Personalizadas" },
   { icon: Package,    nameEn: "Gift Boxes", nameEs: "Cajas de Regalo" },
-  { icon: Scissors,   nameEn: "Vinyl & Logo Printing", nameEs: "Impresión de Logos y Vinyl" },
+  { icon: Scissors,   nameEn: "Logos, Vinyl & Stickers", nameEs: "Logos, Vinyl y Stickers" },
   { icon: FileText,   nameEn: "Creative Stationery", nameEs: "Papelería Creativa" },
 ]
 
