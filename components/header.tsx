@@ -95,12 +95,12 @@ export function Header() {
           </Link>
 
           {/* CTA */}
-          <a
-            href="#shop"
+          <Link
+            href="/customize"
             className="hidden sm:inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-lg"
           >
-            {t("hero.cta.shop")}
-          </a>
+            {locale === "es" ? "Personaliza el tuyo" : "Customize Yours"}
+          </Link>
         </div>
       </div>
     </header>

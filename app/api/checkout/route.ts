@@ -22,6 +22,18 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_BASE_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
 
+    const photoMetadata: Record<string, string> = {}
+    let photoIndex = 1
+    for (const item of items) {
+      if (item.photos?.length) {
+        for (const url of item.photos) {
+          photoMetadata[`photo_${String(photoIndex).padStart(2, "0")}`] = url
+          photoIndex++
+          if (photoIndex > 30) break
+        }
+      }
+    }
+
     const lineItems = items.map((item: CartItem) => ({
       price_data: {
         currency: "usd",
@@ -64,6 +76,7 @@ export async function POST(request: Request) {
         state: customerInfo.state,
         zip: customerInfo.zip,
         country: customerInfo.country,
+        ...photoMetadata,
       },
       success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/checkout`,
