@@ -10,14 +10,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useCart } from "@/components/cart-context"
+import { usePhotos } from "@/lib/photos-context"
 import { useI18n } from "@/lib/i18n"
 import { useRouter } from "next/navigation"
 
 export function CheckoutForm() {
   const { items, totalPrice } = useCart()
+  const { photos, clearPhotos } = usePhotos()
   const { t } = useI18n()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const shipping = totalPrice >= 100 ? 0 : 12
@@ -48,20 +51,32 @@ export function CheckoutForm() {
     }
 
     try {
+      // Upload photos to Google Drive if any
+      let driveFolderUrl: string | null = null
+      if (photos.length > 0) {
+        setUploadStatus(`Uploading ${photos.length} photo(s)...`)
+        const uploadData = new FormData()
+        uploadData.append("customerName", `${customerInfo.firstName} ${customerInfo.lastName}`)
+        photos.forEach(f => uploadData.append("files", f))
+        const uploadRes = await fetch("/api/upload", { method: "POST", body: uploadData })
+        const uploadJson = await uploadRes.json()
+        driveFolderUrl = uploadJson.folderUrl || null
+        clearPhotos()
+        setUploadStatus(null)
+      }
+
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items, customerInfo }),
+        body: JSON.stringify({ items, customerInfo, driveFolderUrl }),
       })
 
       const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || "Something went wrong")
-      }
+      if (!response.ok) throw new Error(data.error || "Something went wrong")
 
       window.location.href = data.url
     } catch (err) {
+      setUploadStatus(null)
       setError(err instanceof Error ? err.message : "An error occurred. Please try again.")
       setIsSubmitting(false)
     }
@@ -216,7 +231,7 @@ export function CheckoutForm() {
               disabled={isSubmitting}
             >
               <Lock className="h-4 w-4" />
-              {isSubmitting ? "Redirecting to payment..." : "Proceed to Payment"}
+              {uploadStatus ?? (isSubmitting ? "Redirecting to payment..." : "Proceed to Payment")}
             </Button>
           </div>
         </div>

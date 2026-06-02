@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useCart } from "@/components/cart-context"
+import { usePhotos } from "@/lib/photos-context"
 import { useI18n } from "@/lib/i18n"
 
 const SHAPES = [
@@ -34,24 +35,10 @@ const PHOTOS_FEW_PRICE = 10   // 1–5 photos
 const PHOTOS_MANY_PRICE = 15  // 6–15 photos
 const MAX_PHOTOS = 15
 
-async function uploadToCloudinary(file: File): Promise<string> {
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-  const preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-  if (!cloudName || !preset) throw new Error("Cloudinary not configured")
-  const fd = new FormData()
-  fd.append("file", file)
-  fd.append("upload_preset", preset)
-  fd.append("folder", "wemark-orders")
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-    method: "POST", body: fd,
-  })
-  const data = await res.json()
-  if (!data.secure_url) throw new Error("Upload failed")
-  return data.secure_url
-}
 
 export function ShadowBoxConfigurator() {
   const { addToCart } = useCart()
+  const { setPhotos: savePhotosToContext } = usePhotos()
   const { locale } = useI18n()
   const router = useRouter()
   const es = locale === "es"
@@ -90,11 +77,6 @@ export function ShadowBoxConfigurator() {
     setAdding(true)
     setError(null)
     try {
-      let photoUrls: string[] = []
-      if (photoFiles.length > 0) {
-        photoUrls = await Promise.all(photoFiles.map(uploadToCloudinary))
-      }
-
       const selectedShape = SHAPES.find(s => s.id === shape)!
       const selectedColor = COLORS.find(c => c.id === color)!
       const customization = [
@@ -105,6 +87,9 @@ export function ShadowBoxConfigurator() {
         photoFiles.length > 0 ? `${photoFiles.length} ${es ? "foto(s)" : "photo(s)"}` : null,
       ].filter(Boolean).join(" · ")
 
+      // Save photos to context — Drive upload happens at checkout with client name
+      savePhotosToContext(photoFiles)
+
       addToCart(
         {
           id: `custom-shadow-box-${Date.now()}`,
@@ -114,8 +99,7 @@ export function ShadowBoxConfigurator() {
           category: "Custom",
           description: customization,
         },
-        customization,
-        photoUrls
+        customization
       )
       router.push("/cart")
     } catch (err) {

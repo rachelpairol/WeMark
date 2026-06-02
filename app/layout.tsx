@@ -5,6 +5,7 @@ import { Cormorant_Garamond, Nunito } from "next/font/google"
 import "./globals.css"
 import { CartProvider } from "@/components/cart-context"
 import { I18nProvider } from "@/lib/i18n"
+import { PhotosProvider } from "@/lib/photos-context"
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -33,7 +34,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${cormorant.variable} ${nunito.variable} font-sans antialiased`}>
         <I18nProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <PhotosProvider>{children}</PhotosProvider>
+          </CartProvider>
         </I18nProvider>
       </body>
     </html>

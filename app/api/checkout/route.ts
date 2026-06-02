@@ -12,7 +12,7 @@ interface CartItem {
 export async function POST(request: Request) {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-    const { items, customerInfo } = await request.json()
+    const { items, customerInfo, driveFolderUrl } = await request.json()
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 })
@@ -76,6 +76,7 @@ export async function POST(request: Request) {
         state: customerInfo.state,
         zip: customerInfo.zip,
         country: customerInfo.country,
+        drive_folder: driveFolderUrl || "",
         ...photoMetadata,
       },
       success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
