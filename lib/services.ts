@@ -126,8 +126,8 @@ export const services: Service[] = [
     id: "stationery",
     name: "Creative Stationery",
     nameEs: "Papelería Creativa",
-    description: "Invitations, thank-you cards, labels, stickers and custom stationery for any event or occasion.",
-    descriptionEs: "Invitaciones, tarjetas de agradecimiento, etiquetas, stickers y papelería para cualquier evento u ocasión.",
+    description: "Personalized gift boxes, phrases & decoration, invitations, thank-you cards, labels, stickers and custom stationery for any event or occasion.",
+    descriptionEs: "Cajas de regalo personalizadas, frases y decoración, invitaciones, tarjetas de agradecimiento, etiquetas, stickers y papelería para cualquier evento u ocasión.",
     image: "/Images/papeleria.jpg.jpeg",
     details: [
       "Invitations, cards, labels & stickers",
