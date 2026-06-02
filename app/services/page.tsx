@@ -68,7 +68,7 @@ export default function ServicesPage() {
                     </p>
 
                     <ul className="mt-4 space-y-1.5">
-                      {service.details.map((detail, i) => (
+                      {(es ? service.detailsEs : service.details).map((detail, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                           <Heart className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
                           {detail}
