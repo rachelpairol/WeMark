@@ -92,12 +92,87 @@ export async function POST(request: Request) {
       `
 
       const resend = new Resend(process.env.RESEND_API_KEY!)
+
+      // Email to store owner
       await resend.emails.send({
         from: "WeMark Orders <onboarding@resend.dev>",
         to: "we.mark026@gmail.com",
         subject: `🛍️ Nueva orden — $${totalPaid.toFixed(2)} USD — ${meta.firstName} ${meta.lastName}`,
         html,
       })
+
+      // Branded confirmation email to customer
+      if (session.customer_email) {
+        const customerHtml = `
+          <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#333;background:#fff">
+
+            <div style="background:#D49B9B;padding:32px;text-align:center">
+              <h1 style="color:white;margin:0;font-size:28px;letter-spacing:2px">WeMark</h1>
+              <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;letter-spacing:1px">HANDCRAFTED PERSONALIZED GIFTS</p>
+            </div>
+
+            <div style="padding:40px 32px">
+              <h2 style="color:#D49B9B;margin-top:0;font-size:22px">¡Gracias por tu pedido, ${meta.firstName}! 🌸</h2>
+              <p style="line-height:1.7;color:#555">
+                Hemos recibido tu orden y ya estamos comenzando a preparar tu shadow box personalizado con todo el cariño del mundo.
+                Nos comunicaremos contigo en las próximas 24 horas para confirmar los detalles de personalización.
+              </p>
+
+              <div style="background:#fdf8f8;border-radius:8px;padding:24px;margin:24px 0">
+                <h3 style="margin-top:0;color:#D49B9B;font-size:16px;text-transform:uppercase;letter-spacing:1px">Resumen de tu pedido</h3>
+                <table style="width:100%;border-collapse:collapse">
+                  ${lineItems.data.map((item) => `
+                    <tr>
+                      <td style="padding:8px 0;border-bottom:1px solid #f0e8e8;color:#555">${item.description}</td>
+                      <td style="padding:8px 0;border-bottom:1px solid #f0e8e8;text-align:center;color:#888">x${item.quantity}</td>
+                      <td style="padding:8px 0;border-bottom:1px solid #f0e8e8;text-align:right;font-weight:bold;color:#333">$${((item.amount_total ?? 0) / 100).toFixed(2)}</td>
+                    </tr>
+                  `).join("")}
+                  <tr>
+                    <td colspan="2" style="padding:12px 0 0;font-weight:bold;color:#333">Total pagado</td>
+                    <td style="padding:12px 0 0;text-align:right;font-weight:bold;font-size:18px;color:#D49B9B">$${totalPaid.toFixed(2)} USD</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div style="background:#fdf8f8;border-radius:8px;padding:24px;margin:24px 0">
+                <h3 style="margin-top:0;color:#D49B9B;font-size:16px;text-transform:uppercase;letter-spacing:1px">Dirección de envío</h3>
+                <p style="margin:0;color:#555;line-height:1.7">
+                  ${meta.address}${meta.address2 ? `, ${meta.address2}` : ""}<br>
+                  ${meta.city}, ${meta.state} ${meta.zip}<br>
+                  ${meta.country}
+                </p>
+              </div>
+
+              <p style="line-height:1.7;color:#555">
+                Tu pedido será enviado en <strong>3–5 días hábiles</strong> una vez confirmados los detalles de personalización.
+              </p>
+
+              <div style="border-top:1px solid #f0e8e8;padding-top:24px;margin-top:32px;text-align:center">
+                <p style="color:#888;font-size:13px;margin:0">¿Preguntas? Contáctanos:</p>
+                <p style="margin:8px 0">
+                  <a href="mailto:we.mark026@gmail.com" style="color:#D49B9B;text-decoration:none">we.mark026@gmail.com</a>
+                </p>
+                <p style="margin:0">
+                  <a href="https://www.instagram.com/we_mark26" style="color:#D49B9B;text-decoration:none">@we_mark26</a>
+                </p>
+              </div>
+            </div>
+
+            <div style="background:#f9f3f3;padding:16px;text-align:center">
+              <p style="color:#aaa;font-size:12px;margin:0">© 2025 WeMark · Handcrafted with love 🌸</p>
+            </div>
+
+          </div>
+        `
+
+        await resend.emails.send({
+          from: "WeMark <onboarding@resend.dev>",
+          to: session.customer_email,
+          subject: `🌸 ¡Tu pedido de WeMark está confirmado! — Orden #${session.id.slice(-8).toUpperCase()}`,
+          html: customerHtml,
+        })
+      }
     } catch (err) {
       console.error("Error sending order email:", err)
     }
