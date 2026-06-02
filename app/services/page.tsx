@@ -104,8 +104,8 @@ export default function ServicesPage() {
                   </h2>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                     {es
-                      ? "Cuadros personalizados con rosas de papel para el Día de la Madre, San Valentín, aniversarios y más."
-                      : "Personalized frames with paper roses for Mother's Day, Valentine's Day, anniversaries and more."}
+                      ? "Cuadros personalizados con rosas de papel para el Día de la Madre, San Valentín, cumpleaños, Baby Shower, aniversarios, graduaciones y más."
+                      : "Personalized frames with paper roses for Mother's Day, Valentine's Day, birthdays, Baby Showers, anniversaries, graduations and more."}
                   </p>
                   <ul className="mt-4 space-y-1.5">
                     {(es
