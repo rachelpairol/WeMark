@@ -23,7 +23,7 @@ export const services: Service[] = [
     nameEs: "Tarjetas de Presentación",
     description: "Professional business cards printed with high quality. Custom design available if you don't have one.",
     descriptionEs: "Tarjetas de presentación impresas con alta calidad. Diseño personalizado disponible si no tienes uno.",
-    image: "/Images/tarjetas.jpg",
+    image: "/Images/tarjetas.jpg.jpeg",
     details: ["Papel premium", "Acabado mate o brillante", "Diseño incluido si lo necesitas", "Entrega en 5–7 días"],
     formFields: [
       { key: "quantity", label: "Quantity", labelEs: "Cantidad", type: "select", options: ["25", "50", "100", "250", "500"], required: true },
@@ -53,7 +53,7 @@ export const services: Service[] = [
     nameEs: "Cajas de Regalo",
     description: "Personalized gift boxes for birthdays and special occasions. Custom phrases and decoration.",
     descriptionEs: "Cajas de regalo personalizadas para cumpleaños y ocasiones especiales. Frases y decoración a tu gusto.",
-    image: "/Images/cajas.jpg",
+    image: "/Images/cajas.jpg.jpeg",
     details: ["Frases personalizadas", "Decoración incluida", "Con o sin caja según tu preferencia", "Ideal para cumpleaños y celebraciones"],
     formFields: [
       { key: "occasion", label: "Occasion", labelEs: "Ocasión", type: "select", options: ["Birthday", "Anniversary", "Baby Shower", "Graduation", "Other"], required: true },
@@ -83,7 +83,7 @@ export const services: Service[] = [
     nameEs: "Papelería Creativa",
     description: "Invitations, thank-you cards, labels, stickers and all kinds of custom stationery for any event.",
     descriptionEs: "Invitaciones, tarjetas de agradecimiento, etiquetas, stickers y todo tipo de papelería para cualquier evento.",
-    image: "/Images/papeleria.jpg",
+    image: "/Images/papeleria.jpg.jpeg",
     details: ["Diseño personalizado", "Papel premium", "Cualquier evento u ocasión", "Impresión de alta calidad"],
     formFields: [
       { key: "type", label: "Type of stationery", labelEs: "Tipo de papelería", type: "select", options: ["Invitations", "Thank-you cards", "Labels / Stickers", "Tags", "Other"], required: true },
