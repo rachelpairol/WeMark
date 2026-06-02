@@ -2,6 +2,7 @@ import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
 import { FeaturesSection } from "@/components/features-section"
 import { FeaturedProducts } from "@/components/featured-products"
+import { ServicesTeaser } from "@/components/services-teaser"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import {FAQSection} from "@/components/faq-section"
 import { HowItWorksSection } from "@/components/how-it-works-section"
@@ -17,6 +18,7 @@ export default function Page() {
         <FeaturesSection />
         <HowItWorksSection />
         <FeaturedProducts />
+        <ServicesTeaser />
         <TestimonialsSection />
         <FAQSection />
         <CTASection />
