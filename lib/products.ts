@@ -55,9 +55,27 @@ export const products: Product[] = [
     description:
       "Honor their achievement with this elegant graduation shadow box. Customizable with graduate's name, school colors, and inspirational message.",
   },
+  {
+    id: "birthday-balloon-box",
+    name: "Birthday Shadow Box with Roses",
+    price: 75,
+    image: "/Images/5-IMG_2883.jpg",
+    category: "Birthday",
+    description:
+      "Celebrate their special day with a stunning birthday shadow box. Handcrafted paper roses in festive colors with a personalized birthday message. The perfect gift they'll keep forever.",
+  },
+  {
+    id: "baby-shower-box",
+    name: "Baby Shower Shadow Box",
+    price: 80,
+    image: "/Images/6-IMG_2883.jpg",
+    category: "Baby Shower",
+    description:
+      "Welcome the new arrival with this beautiful baby shower shadow box. Soft pastel paper roses with personalized baby name, date and a heartfelt message. A keepsake gift for new parents.",
+  },
 ]
 
-export const categories = ["All", "Mother's Day", "Valentine's Day", "Anniversary", "Birthday", "Graduation"]
+export const categories = ["All", "Mother's Day", "Valentine's Day", "Anniversary", "Birthday", "Baby Shower", "Graduation"]
 
 export function getProductById(id: string): Product | undefined {
   return products.find((p) => p.id === id)

@@ -74,6 +74,11 @@ export function Footer() {
                   {t("category.Birthday")}
                 </Link>
               </li>
+              <li>
+                <Link href="/shop?category=Baby Shower" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Baby Shower
+                </Link>
+              </li>
             </ul>
           </div>
 

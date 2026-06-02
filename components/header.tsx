@@ -29,47 +29,29 @@ export function Header() {
 
         {/* Navigation */}
         <nav className="hidden items-center gap-10 text-sm md:flex">
-          <a
-            href="#home"
-            className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-          >
+          <Link href="/#home" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
             {t("nav.home")}
-          </a>
+          </Link>
 
-          <a
-            href="#shop"
-            className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-          >
+          <Link href="/shop" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
             {t("nav.shop")}
-          </a>
+          </Link>
 
-          <a
-            href="#how"
-            className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-          >
+          <Link href="/#how" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
             {t("nav.how")}
-          </a>
+          </Link>
 
-          <a
-            href="#reviews"
-            className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-          >
+          <Link href="/#reviews" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
             {t("nav.reviews")}
-          </a>
+          </Link>
 
-          <Link
-            href="/services"
-            className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-          >
+          <Link href="/services" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
             {locale === "es" ? "Servicios" : "Services"}
           </Link>
 
-          <a
-            href="#contact"
-            className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-          >
+          <Link href="/#contact" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
             {t("nav.contact")}
-          </a>
+          </Link>
         </nav>
 
         {/* Right Side */}
