@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { QuoteDialog } from "@/components/quote-dialog"
@@ -76,15 +77,54 @@ export default function ServicesPage() {
                       ))}
                     </ul>
 
-                    <Button
-                      className="mt-6 w-full"
-                      onClick={() => setSelected(service)}
-                    >
+                    <Button className="mt-6 w-full" onClick={() => setSelected(service)}>
                       {es ? "Solicitar cotización" : "Request a quote"}
                     </Button>
                   </div>
                 </div>
               ))}
+
+              {/* Shadow Boxes — 6th card, links to shop */}
+              <div className="group flex flex-col overflow-hidden rounded-2xl border border-primary/30 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div className="relative aspect-[4/3] overflow-hidden bg-secondary/20">
+                  <Image
+                    src="/Images/mom-shadow-box-roses.jpeg"
+                    alt={es ? "Cuadros Shadow Box" : "Shadow Box Frames"}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <span className="absolute top-3 right-3 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
+                    {es ? "Precio fijo" : "Fixed price"}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h2 className="font-serif text-xl font-bold text-foreground">
+                    {es ? "Cuadros Shadow Box" : "Shadow Box Frames"}
+                  </h2>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                    {es
+                      ? "Cuadros personalizados con rosas de papel para el Día de la Madre, San Valentín, aniversarios y más."
+                      : "Personalized frames with paper roses for Mother's Day, Valentine's Day, anniversaries and more."}
+                  </p>
+                  <ul className="mt-4 space-y-1.5">
+                    {(es
+                      ? ["Rosas de papel artesanales", "Totalmente personalizados", "Desde $65 USD", "Empaque de regalo incluido"]
+                      : ["Handcrafted paper roses", "Fully personalized", "Starting at $65 USD", "Gift packaging included"]
+                    ).map((detail, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <Heart className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button asChild className="mt-6 w-full">
+                    <Link href="/shop">
+                      {es ? "Ver colección" : "View collection"}
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>

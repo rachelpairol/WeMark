@@ -104,16 +104,16 @@ export const services: Service[] = [
     descriptionEs: "Corta tu logo o diseño en vinyl o papel sticker con nuestra máquina Cricut. Ideal para stickers de marca para cerrar cajas, sobres o como etiquetas de agradecimiento.",
     image: "/Images/logos.jpg",
     details: [
-      "Professional Cricut machine",
       "Regular & textile vinyl",
       "Brand stickers for boxes & envelopes",
       "Thank-you stickers & custom labels",
+      "Custom sizes, colors & quantities",
     ],
     detailsEs: [
-      "Máquina Cricut profesional",
       "Vinyl regular y textil",
       "Stickers de marca para cajas y sobres",
       "Stickers de agradecimiento y etiquetas personalizadas",
+      "Tamaños, colores y cantidades personalizados",
     ],
     formFields: [
       { key: "type", label: "What do you need?", labelEs: "¿Qué necesitas?", type: "select", options: ["Logo on vinyl", "Brand stickers / Thank-you stickers", "Textile vinyl (for clothing)", "Other"], required: true },
