@@ -43,6 +43,9 @@ export function SuccessContent() {
       <p className="mt-4 text-muted-foreground leading-relaxed">
         Thank you for your order. We&apos;ve received your payment and will begin crafting your personalized shadow box right away.
       </p>
+      <p className="mt-3 text-sm text-muted-foreground bg-secondary/40 rounded-lg px-4 py-2">
+        📧 Check your email for a confirmation. If you don&apos;t see it, check your <strong>spam folder</strong> and mark it as &ldquo;Not spam&rdquo;.
+      </p>
 
       <div className="mt-8 grid grid-cols-2 gap-4 text-left">
         <div className="rounded-lg border border-border bg-card p-4">

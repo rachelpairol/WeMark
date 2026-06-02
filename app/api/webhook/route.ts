@@ -100,6 +100,7 @@ export async function POST(request: Request) {
         to: "we.mark026@gmail.com",
         subject: `🛍️ Nueva orden — $${totalPaid.toFixed(2)} USD — ${meta.firstName} ${meta.lastName}`,
         html: ownerHtml,
+        text: `Nueva orden WeMark\n\nCliente: ${meta.firstName} ${meta.lastName}\nEmail: ${session.customer_email}\nTeléfono: ${meta.phone || "—"}\n\nEnvío:\n${meta.address}, ${meta.city}, ${meta.state} ${meta.zip}, ${meta.country}\n\nTotal: $${totalPaid.toFixed(2)} USD`,
       })
 
       // ── Confirmation email to customer ────────────────────────────────────
@@ -158,8 +159,9 @@ export async function POST(request: Request) {
         await transporter.sendMail({
           from: '"WeMark" <we.mark026@gmail.com>',
           to: session.customer_email,
-          subject: `🌸 ¡Tu pedido de WeMark está confirmado! — #${session.id.slice(-8).toUpperCase()}`,
+          subject: `¡Tu pedido de WeMark está confirmado! — #${session.id.slice(-8).toUpperCase()}`,
           html: customerHtml,
+          text: `¡Gracias por tu pedido, ${meta.firstName}!\n\nHemos recibido tu orden y ya estamos preparando tu shadow box personalizado.\n\nNos comunicaremos contigo en las próximas 24 horas.\n\nTotal pagado: $${totalPaid.toFixed(2)} USD\n\n¿Preguntas? Escríbenos a we.mark026@gmail.com o llámanos al +1 (754) 332-8861.\n\nCon cariño,\nEl equipo de WeMark`,
         })
       }
     } catch (err) {
