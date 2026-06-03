@@ -3,13 +3,11 @@ import { google } from "googleapis"
 import { PassThrough } from "stream"
 
 function getDrive() {
-  const key = process.env.GOOGLE_SERVICE_ACCOUNT_KEY
-  if (!key) throw new Error("GOOGLE_SERVICE_ACCOUNT_KEY not set")
-  const credentials = JSON.parse(key)
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ["https://www.googleapis.com/auth/drive"],
-  })
+  const auth = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET
+  )
+  auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN })
   return google.drive({ version: "v3", auth })
 }
 
