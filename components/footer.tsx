@@ -16,11 +16,11 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="inline-block">
               <Image
-                src="/images/WeMark.png"
+                src="/Images/WeMarkLogo2.png"
                 alt="WeMark"
-                width={100}
-                height={100}
-                className="h-20 w-auto"
+                width={120}
+                height={120}
+                className="h-24 w-auto"
               />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
