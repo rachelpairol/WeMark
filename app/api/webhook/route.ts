@@ -90,9 +90,9 @@ export async function POST(request: Request) {
               <span style="font-size:20px;font-weight:bold;color:#D49B9B">Total: $${totalPaid.toFixed(2)} USD</span>
             </div>
             ${meta.drive_folder ? `
-              <h2 style="color:#D49B9B;margin-top:24px">📁 Fotos del cliente</h2>
+              <h2 style="color:#D49B9B;margin-top:24px">📷 Fotos del cliente</h2>
               <a href="${meta.drive_folder}" target="_blank" style="display:inline-block;padding:10px 20px;background:#D49B9B;color:white;border-radius:8px;text-decoration:none;font-weight:bold;font-size:14px">
-                📁 Ver fotos en Google Drive
+                📷 Ver fotos en Cloudinary
               </a>
             ` : ""}
             <div style="margin-top:24px;padding:16px;background:#fdf8f8;border-radius:8px;font-size:12px;color:#aaa">
