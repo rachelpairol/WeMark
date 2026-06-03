@@ -41,25 +41,28 @@ export async function POST(request: Request) {
 
     const folderId = folder.data.id!
 
-    // Make folder viewable by Rachel (owner can always see it)
-    // Upload each file
-    await Promise.all(
-      files.map(async (file, i) => {
-        const buffer = Buffer.from(await file.arrayBuffer())
-        const stream = Readable.from(buffer)
-        const ext = file.name.split(".").pop() || "jpg"
-        await drive.files.create({
-          requestBody: {
-            name: `foto_${String(i + 1).padStart(2, "0")}.${ext}`,
-            parents: [folderId],
-          },
-          media: {
-            mimeType: file.type || "image/jpeg",
-            body: stream,
-          },
-        })
+    // Upload files sequentially to avoid stream conflicts
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const buffer = Buffer.from(await file.arrayBuffer())
+      const ext = file.name.split(".").pop() || "jpg"
+      const stream = new Readable({
+        read() {
+          this.push(buffer)
+          this.push(null)
+        },
       })
-    )
+      await drive.files.create({
+        requestBody: {
+          name: `foto_${String(i + 1).padStart(2, "0")}.${ext}`,
+          parents: [folderId],
+        },
+        media: {
+          mimeType: file.type || "image/jpeg",
+          body: stream,
+        },
+      })
+    }
 
     const folderUrl = `https://drive.google.com/drive/folders/${folderId}`
     return NextResponse.json({ folderUrl, folderName })
