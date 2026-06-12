@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { Plus, Trash2, Copy, RefreshCw, Check } from "lucide-react"
+import { useState, useMemo, Fragment } from "react"
+import { Plus, Trash2, Copy, RefreshCw, Check, Divide } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -12,6 +12,10 @@ interface Material {
   unit: string
   quantity: number
   unitCost: number
+  // bulk helper
+  showBulk?: boolean
+  bulkPrice?: number
+  bulkQty?: number
 }
 
 const CATEGORIES = [
@@ -69,7 +73,7 @@ export function CostCalculator() {
   const removeMaterial = (id: string) =>
     setMaterials(prev => prev.filter(m => m.id !== id))
 
-  const updateMaterial = (id: string, key: keyof Material, val: string | number) =>
+  const updateMaterial = (id: string, key: keyof Material, val: string | number | boolean) =>
     setMaterials(prev => prev.map(m => m.id === id ? { ...m, [key]: val } : m))
 
   // ── Copy summary ─────────────────────────────────────────────────────────────
@@ -217,60 +221,144 @@ export function CostCalculator() {
                     <th className="w-8"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
+                <tbody>
                   {materials.map(m => (
-                    <tr key={m.id} className="group">
-                      <td className="py-2 pr-3">
-                        <Input
-                          value={m.name}
-                          onChange={e => updateMaterial(m.id, "name", e.target.value)}
-                          placeholder="Material name"
-                          className="h-8 text-sm"
-                        />
-                      </td>
-                      <td className="py-2 pr-3">
-                        <Input
-                          value={m.unit}
-                          onChange={e => updateMaterial(m.id, "unit", e.target.value)}
-                          placeholder="unit"
-                          className="h-8 text-sm"
-                        />
-                      </td>
-                      <td className="py-2 pr-3">
-                        <Input
-                          type="number"
-                          min={0}
-                          step={0.5}
-                          value={m.quantity}
-                          onChange={e => updateMaterial(m.id, "quantity", Number(e.target.value))}
-                          className="h-8 text-sm text-right"
-                        />
-                      </td>
-                      <td className="py-2 pr-3">
-                        <div className="relative">
-                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">$</span>
+                    <Fragment key={m.id}>
+                      <tr className="group border-t border-border">
+                        <td className="py-2 pr-3">
+                          <Input
+                            value={m.name}
+                            onChange={e => updateMaterial(m.id, "name", e.target.value)}
+                            placeholder="Material name"
+                            className="h-8 text-sm"
+                          />
+                        </td>
+                        <td className="py-2 pr-3">
+                          <Input
+                            value={m.unit}
+                            onChange={e => updateMaterial(m.id, "unit", e.target.value)}
+                            placeholder="unit"
+                            className="h-8 text-sm"
+                          />
+                        </td>
+                        <td className="py-2 pr-3">
                           <Input
                             type="number"
                             min={0}
-                            step={0.01}
-                            value={m.unitCost}
-                            onChange={e => updateMaterial(m.id, "unitCost", Number(e.target.value))}
-                            className="h-8 text-sm text-right pl-5"
+                            step={0.5}
+                            value={m.quantity}
+                            onChange={e => updateMaterial(m.id, "quantity", Number(e.target.value))}
+                            className="h-8 text-sm text-right"
                           />
-                        </div>
-                      </td>
-                      <td className="py-2 pr-3 text-right font-medium text-foreground">
-                        {fmt(m.quantity * m.unitCost)}
-                      </td>
-                      <td className="py-2">
-                        <button
-                          onClick={() => removeMaterial(m.id)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </td>
-                    </tr>
+                        </td>
+                        <td className="py-2 pr-3">
+                          <div className="flex items-center gap-1">
+                            <div className="relative flex-1">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">$</span>
+                              <Input
+                                type="number"
+                                min={0}
+                                step={0.01}
+                                value={m.unitCost}
+                                onChange={e => updateMaterial(m.id, "unitCost", Number(e.target.value))}
+                                className="h-8 text-sm text-right pl-5"
+                              />
+                            </div>
+                            <button
+                              title="Calculate from bulk purchase"
+                              onClick={() => updateMaterial(m.id, "showBulk", !m.showBulk)}
+                              className={`shrink-0 h-8 w-8 flex items-center justify-center rounded-md border transition-colors ${
+                                m.showBulk
+                                  ? "border-primary bg-primary/10 text-primary"
+                                  : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
+                              }`}
+                            >
+                              <Divide className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                        <td className="py-2 pr-3 text-right font-medium text-foreground">
+                          {fmt(m.quantity * m.unitCost)}
+                        </td>
+                        <td className="py-2">
+                          <button
+                            onClick={() => removeMaterial(m.id)}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </tr>
+
+                      {/* Bulk price helper row */}
+                      {m.showBulk && (
+                        <tr className="bg-primary/5">
+                          <td colSpan={6} className="px-2 pb-3 pt-1">
+                            <div className="flex items-end gap-3 flex-wrap">
+                              <div className="flex items-center gap-2 text-xs text-primary font-medium">
+                                <Divide className="h-3.5 w-3.5" />
+                                Bulk calculator
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div>
+                                  <p className="text-xs text-muted-foreground mb-1">Pack price ($)</p>
+                                  <div className="relative">
+                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">$</span>
+                                    <Input
+                                      type="number"
+                                      min={0}
+                                      step={0.01}
+                                      value={m.bulkPrice ?? ""}
+                                      placeholder="e.g. 5.00"
+                                      onChange={e => updateMaterial(m.id, "bulkPrice", Number(e.target.value))}
+                                      className="h-7 text-xs w-28 pl-5"
+                                    />
+                                  </div>
+                                </div>
+                                <span className="text-muted-foreground text-sm mb-0.5">÷</span>
+                                <div>
+                                  <p className="text-xs text-muted-foreground mb-1">Total units in pack</p>
+                                  <Input
+                                    type="number"
+                                    min={1}
+                                    step={1}
+                                    value={m.bulkQty ?? ""}
+                                    placeholder="e.g. 120"
+                                    onChange={e => updateMaterial(m.id, "bulkQty", Number(e.target.value))}
+                                    className="h-7 text-xs w-28"
+                                  />
+                                </div>
+                                <span className="text-muted-foreground text-sm mb-0.5">=</span>
+                                <div>
+                                  <p className="text-xs text-muted-foreground mb-1">Unit cost</p>
+                                  <p className="h-7 flex items-center text-sm font-bold text-primary">
+                                    {m.bulkPrice && m.bulkQty
+                                      ? `$${(m.bulkPrice / m.bulkQty).toFixed(4)}`
+                                      : "—"}
+                                  </p>
+                                </div>
+                                <Button
+                                  size="sm"
+                                  className="h-7 text-xs mb-0.5"
+                                  disabled={!m.bulkPrice || !m.bulkQty}
+                                  onClick={() => {
+                                    if (m.bulkPrice && m.bulkQty) {
+                                      updateMaterial(m.id, "unitCost", Number((m.bulkPrice / m.bulkQty).toFixed(4)))
+                                      updateMaterial(m.id, "showBulk", false)
+                                    }
+                                  }}
+                                >
+                                  Apply
+                                </Button>
+                              </div>
+                              <p className="text-xs text-muted-foreground w-full">
+                                e.g. Ribbon roll: $5.00 pack price ÷ 120 yards = $0.0417 per yard
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
                   ))}
                 </tbody>
                 <tfoot>
