@@ -12,13 +12,34 @@ import { Textarea } from "@/components/ui/textarea"
 export function ContactFormClient() {
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setSubmitted(true)
-    setIsSubmitting(false)
+    setError(null)
+
+    const formData = new FormData(e.currentTarget)
+    const payload = {
+      name: formData.get("name") as string,
+      email: formData.get("contactEmail") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+    }
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error("Failed")
+      setSubmitted(true)
+    } catch {
+      setError("Something went wrong. Please try again or email us directly.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -53,27 +74,31 @@ export function ContactFormClient() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="name">Name</Label>
-            <Input id="name" required placeholder="Your name" className="mt-1" />
+            <Input id="name" name="name" required placeholder="Your name" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="contactEmail">Email</Label>
-            <Input id="contactEmail" type="email" required placeholder="your@email.com" className="mt-1" />
+            <Input id="contactEmail" name="contactEmail" type="email" required placeholder="your@email.com" className="mt-1" />
           </div>
         </div>
         <div>
           <Label htmlFor="subject">Subject</Label>
-          <Input id="subject" required placeholder="Custom order inquiry" className="mt-1" />
+          <Input id="subject" name="subject" required placeholder="Custom order inquiry" className="mt-1" />
         </div>
         <div>
           <Label htmlFor="message">Message</Label>
           <Textarea
             id="message"
+            name="message"
             required
             placeholder="Tell us about your vision..."
             rows={6}
             className="mt-1"
           />
         </div>
+        {error && (
+          <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-4 py-3">{error}</p>
+        )}
         <Button type="submit" className="w-full gap-2" size="lg" disabled={isSubmitting}>
           {isSubmitting ? "Sending..." : "Send Message"}
           {!isSubmitting && <Send className="h-4 w-4" />}

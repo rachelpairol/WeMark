@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, Lock } from "lucide-react"
@@ -26,8 +26,11 @@ export function CheckoutForm() {
   const shipping = totalPrice >= 100 ? 0 : 12
   const total = totalPrice + shipping
 
+  useEffect(() => {
+    if (items.length === 0) router.push("/cart")
+  }, [items.length, router])
+
   if (items.length === 0) {
-    router.push("/cart")
     return null
   }
 
@@ -51,7 +54,7 @@ export function CheckoutForm() {
     }
 
     try {
-      // Upload photos to Google Drive if any
+      // Upload photos to Cloudinary if any
       let driveFolderUrl: string | null = null
       if (photos.length > 0) {
         setUploadStatus(`Uploading ${photos.length} photo(s)...`)
