@@ -19,7 +19,7 @@ export const translations = {
     "hero.title.1": "Gifts That Tell ",
     "hero.title.2": "Your Story",
     "hero.description":
-      "Each WeMark shadow box is a handcrafted masterpiece, made with love using delicate paper roses and personalized details. Perfect for every special occasion.",
+      "From handcrafted shadow boxes with paper roses to custom t-shirts, surprise gift sets and creative stationery — every WeMark creation is made with love and personalized just for you.",
     "hero.cta.shop": "Customize Yours",
     "hero.cta.about": "Our Story",
 
@@ -272,7 +272,7 @@ export const translations = {
     "hero.title.1": "Regalos Que Cuentan ",
     "hero.title.2": "Tu Historia",
     "hero.description":
-      "Cada shadow box de WeMark es una obra maestra hecha a mano, elaborada con amor usando delicadas rosas de papel y detalles personalizados. Perfecto para cada ocasi\u00f3n especial.",
+      "Desde shadow boxes hechos a mano con rosas de papel hasta camisetas personalizadas, regalos sorpresa y papeler\u00eda creativa \u2014 cada creaci\u00f3n de WeMark est\u00e1 hecha con amor y personalizada para ti.",
     "hero.cta.shop": "Personaliza el Tuyo",
     "hero.cta.about": "Nuestra Historia",
 

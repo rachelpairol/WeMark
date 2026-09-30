@@ -1,16 +1,17 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, Scissors, CreditCard, Shirt, Package, FileText } from "lucide-react"
+import { ArrowRight, Scissors, CreditCard, Shirt, Package, FileText, PartyPopper } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/lib/i18n"
 
 const servicesList = [
-  { icon: CreditCard, nameEn: "Business Cards", nameEs: "Tarjetas de Presentación" },
-  { icon: Shirt,      nameEn: "Custom T-Shirts", nameEs: "Camisetas Personalizadas" },
-  { icon: Package,    nameEn: "Gift Boxes", nameEs: "Cajas de Regalo" },
-  { icon: Scissors,   nameEn: "Logos, Vinyl & Stickers", nameEs: "Logos, Vinyl y Stickers" },
-  { icon: FileText,   nameEn: "Creative Stationery", nameEs: "Papelería Creativa" },
+  { icon: CreditCard,  nameEn: "Business Cards", nameEs: "Tarjetas de Presentación" },
+  { icon: Shirt,       nameEn: "Custom T-Shirts", nameEs: "Camisetas Personalizadas" },
+  { icon: PartyPopper, nameEn: "Surprise Gifts", nameEs: "Regalos Sorpresa" },
+  { icon: Package,     nameEn: "Gift Boxes", nameEs: "Cajas de Regalo" },
+  { icon: Scissors,    nameEn: "Logos, Vinyl & Stickers", nameEs: "Logos, Vinyl y Stickers" },
+  { icon: FileText,    nameEn: "Creative Stationery", nameEs: "Papelería Creativa" },
 ]
 
 export function ServicesTeaser() {
@@ -30,8 +31,8 @@ export function ServicesTeaser() {
             </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed sm:text-lg">
               {es
-                ? "Con nuestra máquina Cricut creamos mucho más — vinyl textil, papelería, logos, tarjetas y cajas de regalo. Cuéntanos tu idea y te damos el precio."
-                : "With our Cricut machine we create much more — textile vinyl, stationery, logos, business cards and gift boxes. Tell us your idea and we'll quote you."}
+                ? "Con nuestra máquina Cricut creamos mucho más — vinyl textil, papelería, logos, tarjetas, cajas de regalo y sets de regalo sorpresa con globos y peluches. Cuéntanos tu idea y te damos el precio."
+                : "With our Cricut machine we create much more — textile vinyl, stationery, logos, business cards, gift boxes and surprise gift sets with balloons and plush toys. Tell us your idea and we'll quote you."}
             </p>
           </div>
           <Button asChild variant="outline" className="gap-2 border-primary/30 font-semibold hover:bg-primary/10 hover:text-primary shrink-0">
@@ -42,7 +43,7 @@ export function ServicesTeaser() {
           </Button>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {servicesList.map(({ icon: Icon, nameEn, nameEs }) => (
             <Link
               key={nameEn}

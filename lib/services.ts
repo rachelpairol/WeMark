@@ -148,4 +148,31 @@ export const services: Service[] = [
       { key: "details", label: "Describe what you need — colors, theme, text", labelEs: "Describe lo que necesitas — colores, tema, texto", type: "textarea", required: true },
     ],
   },
+  {
+    id: "surprise-gifts",
+    name: "Surprise Gifts",
+    nameEs: "Regalos Sorpresa",
+    description: "Personalized surprise gift sets with balloon décor, plush toys and breakfast trays. Perfect for birthdays, anniversaries and special dates — for him, for her, for anyone.",
+    descriptionEs: "Sets de regalo sorpresa personalizados con decoración de globos, peluches y bandejas de desayuno. Ideal para cumpleaños, aniversarios y fechas especiales — para él, para ella, para quien quieras sorprender.",
+    image: "/Images/regalos-sorpresa.png",
+    details: [
+      "Personalized balloon décor & garlands",
+      "Custom-named plush toys",
+      "Surprise breakfast trays & gift baskets",
+      "Pickup or delivery available",
+    ],
+    detailsEs: [
+      "Decoración de globos personalizada",
+      "Peluches personalizados con nombre",
+      "Bandejas de desayuno sorpresa y canastas de regalo",
+      "Pickup o delivery disponible",
+    ],
+    formFields: [
+      { key: "occasion", label: "Occasion", labelEs: "Ocasión", type: "select", options: ["Birthday / Cumpleaños", "Anniversary / Aniversario", "For Him / Para Él", "Special Date / Fecha Especial", "Other / Otro"], required: true },
+      { key: "type", label: "What would you like included?", labelEs: "¿Qué te gustaría incluir?", type: "select", options: ["Balloon décor / Globos", "Plush toy / Peluche personalizado", "Breakfast tray / Bandeja de desayuno", "A mix of everything / Combinación"], required: true },
+      { key: "personalization", label: "Name(s) or message to personalize", labelEs: "Nombre(s) o mensaje para personalizar", type: "text", required: true },
+      { key: "fulfillment", label: "Pickup or delivery?", labelEs: "¿Pickup o delivery?", type: "select", options: ["Pickup", "Delivery"], required: true },
+      { key: "details", label: "Tell us more — colors, theme, budget", labelEs: "Cuéntanos más — colores, tema, presupuesto", type: "textarea" },
+    ],
+  },
 ]
