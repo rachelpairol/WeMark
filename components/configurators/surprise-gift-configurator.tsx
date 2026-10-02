@@ -19,7 +19,7 @@ const OCCASIONS = [
 
 const BASE_PRICE = 60
 const PLUSH_ADDON = 10
-const BREAKFAST_ADDON = 10
+const BREAKFAST_ADDON = 20
 
 export function SurpriseGiftConfigurator() {
   const { addToCart } = useCart()
