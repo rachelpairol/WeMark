@@ -1,17 +1,20 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { ShoppingBag } from "lucide-react"
+import { ImagePlus, MessageCircle, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useCart } from "@/components/cart-context"
+import { usePhotos } from "@/lib/photos-context"
 import { useI18n } from "@/lib/i18n"
 
 type OrderType = "new" | "reprint"
 type Quantity = "100" | "250" | "500"
+type DesignSource = "final" | "reference" | "contact"
 
 const PRICES: Record<OrderType, Record<Quantity, number>> = {
   new: { "100": 65, "250": 80, "500": 100 },
@@ -19,15 +22,21 @@ const PRICES: Record<OrderType, Record<Quantity, number>> = {
 }
 
 const QUANTITIES: Quantity[] = ["100", "250", "500"]
+const MAX_FILES = 5
 
 export function BusinessCardConfigurator() {
   const { addToCart } = useCart()
+  const { addPhotos } = usePhotos()
   const { locale } = useI18n()
   const router = useRouter()
   const es = locale === "es"
+  const fileRef = useRef<HTMLInputElement>(null)
 
   const [orderType, setOrderType] = useState<OrderType>("new")
   const [quantity, setQuantity] = useState<Quantity>("100")
+  const [designSource, setDesignSource] = useState<DesignSource | null>(null)
+  const [files, setFiles] = useState<File[]>([])
+  const [previews, setPreviews] = useState<string[]>([])
   const [businessName, setBusinessName] = useState("")
   const [contact, setContact] = useState("")
   const [details, setDetails] = useState("")
@@ -36,17 +45,56 @@ export function BusinessCardConfigurator() {
 
   const price = PRICES[orderType][quantity]
 
+  const handleFiles = (fileList: FileList | null) => {
+    if (!fileList) return
+    const newFiles = Array.from(fileList)
+    const combined = [...files, ...newFiles].slice(0, MAX_FILES)
+    setFiles(combined)
+    const newPreviews = combined.map((f) => URL.createObjectURL(f))
+    setPreviews((prev) => {
+      prev.forEach(URL.revokeObjectURL)
+      return newPreviews
+    })
+  }
+
+  const removeFile = (i: number) => {
+    URL.revokeObjectURL(previews[i])
+    setFiles((prev) => prev.filter((_, idx) => idx !== i))
+    setPreviews((prev) => prev.filter((_, idx) => idx !== i))
+  }
+
   const handleAddToCart = () => {
     if (!businessName.trim()) {
       setError(es ? "Escribe el nombre del negocio." : "Write the business name.")
       return
     }
+    if (!designSource) {
+      setError(es ? "Elige cómo nos compartirás el diseño." : "Choose how you'll share the design.")
+      return
+    }
+    if ((designSource === "final" || designSource === "reference") && files.length === 0) {
+      setError(es ? "Sube al menos un archivo." : "Upload at least one file.")
+      return
+    }
+
     setAdding(true)
     setError(null)
+
+    if (files.length > 0) {
+      addPhotos(files)
+    }
+
+    const designLabel =
+      designSource === "final"
+        ? `${es ? "Diseño final subido" : "Final design uploaded"} (${files.length} ${es ? "archivo(s)" : "file(s)"})`
+        : designSource === "reference"
+        ? `${es ? "Referencia subida" : "Reference uploaded"} (${files.length} ${es ? "archivo(s)" : "file(s)"})`
+        : es ? "Prefiere que lo contactemos para decidir el diseño" : "Prefers we contact them to decide the design"
 
     const customization = [
       `${es ? "Tipo" : "Type"}: ${orderType === "new" ? (es ? "Primera vez (incluye diseño)" : "First time (design included)") : (es ? "Reimpresión (mismo diseño)" : "Reprint (same design)")}`,
       `${es ? "Cantidad" : "Quantity"}: ${quantity} ${es ? "tarjetas" : "cards"}`,
+      `${es ? "Diseño" : "Design"}: ${designLabel}`,
       `${es ? "Negocio" : "Business"}: ${businessName.trim()}`,
       contact.trim() ? `${es ? "Contacto" : "Contact"}: ${contact.trim()}` : null,
       details.trim() ? `${es ? "Detalles" : "Details"}: ${details.trim()}` : null,
@@ -126,12 +174,116 @@ export function BusinessCardConfigurator() {
             </div>
           </div>
 
+          {/* Design source */}
+          <div>
+            <h2 className="font-serif text-xl font-semibold text-foreground mb-1">
+              {es ? "3. ¿Cómo nos compartes el diseño?" : "3. How will you share the design?"}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              {es
+                ? "Puedes subir el diseño final listo para imprimir, o un ejemplo de lo que te gustaría — o preferir que te contactemos."
+                : "You can upload the final print-ready design, an example of what you'd like — or prefer we contact you."}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <button
+                onClick={() => setDesignSource("final")}
+                className={`flex flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all ${
+                  designSource === "final" ? "border-primary bg-primary/10 shadow-md" : "border-border hover:border-primary/40"
+                }`}
+              >
+                <span className="font-medium text-foreground">
+                  {es ? "Tengo el diseño final" : "I have the final design"}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {es ? "Listo para imprimir" : "Ready to print"}
+                </span>
+              </button>
+              <button
+                onClick={() => setDesignSource("reference")}
+                className={`flex flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all ${
+                  designSource === "reference" ? "border-primary bg-primary/10 shadow-md" : "border-border hover:border-primary/40"
+                }`}
+              >
+                <span className="font-medium text-foreground">
+                  {es ? "Tengo un ejemplo" : "I have an example"}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {es ? "Referencia de lo que quiero" : "Reference of what I want"}
+                </span>
+              </button>
+              <button
+                onClick={() => setDesignSource("contact")}
+                className={`flex flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all ${
+                  designSource === "contact" ? "border-primary bg-primary/10 shadow-md" : "border-border hover:border-primary/40"
+                }`}
+              >
+                <span className="font-medium text-foreground">
+                  {es ? "Contáctenme" : "Contact me"}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {es ? "Prefiero decidir el diseño con ustedes" : "I'd rather decide the design together"}
+                </span>
+              </button>
+            </div>
+
+            {(designSource === "final" || designSource === "reference") && (
+              <div className="mt-4">
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => handleFiles(e.target.files)}
+                />
+                {files.length < MAX_FILES && (
+                  <button
+                    onClick={() => fileRef.current?.click()}
+                    className="w-full flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border p-8 text-muted-foreground transition-all hover:border-primary/40 hover:text-primary hover:bg-primary/5"
+                  >
+                    <ImagePlus className="h-8 w-8" />
+                    <p className="text-sm font-medium">
+                      {es ? "Haz click para subir archivos" : "Click to upload files"}
+                    </p>
+                    <p className="text-xs">
+                      {es ? `${files.length}/${MAX_FILES} archivos — JPG, PNG` : `${files.length}/${MAX_FILES} files — JPG, PNG`}
+                    </p>
+                  </button>
+                )}
+                {previews.length > 0 && (
+                  <div className="mt-4 grid grid-cols-3 sm:grid-cols-5 gap-3">
+                    {previews.map((src, i) => (
+                      <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-border group">
+                        <Image src={src} alt={`File ${i + 1}`} fill className="object-cover" sizes="100px" />
+                        <button
+                          onClick={() => removeFile(i)}
+                          className="absolute top-1 right-1 h-5 w-5 rounded-full bg-destructive/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3 text-white" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {designSource === "contact" && (
+              <div className="mt-4 rounded-xl border-2 border-primary/30 bg-primary/5 p-4 flex items-start gap-3">
+                <MessageCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <p className="text-sm text-foreground leading-relaxed">
+                  {es
+                    ? "Perfecto — te contactaremos con el teléfono o email que nos dejes abajo para decidir el diseño juntos antes de imprimir."
+                    : "Perfect — we'll reach out using the phone or email you leave below to decide on the design together before printing."}
+                </p>
+              </div>
+            )}
+          </div>
+
           {/* Business details */}
           <div>
             <h2 className="font-serif text-xl font-semibold text-foreground mb-4">
-              {orderType === "new"
-                ? (es ? "3. Datos para el diseño" : "3. Design details")
-                : (es ? "3. Datos del pedido" : "3. Order details")}
+              {es ? "4. Datos del negocio" : "4. Business details"}
             </h2>
             <div className="space-y-4">
               <div>
@@ -160,9 +312,7 @@ export function BusinessCardConfigurator() {
               </div>
               <div>
                 <Label htmlFor="details" className="text-sm text-muted-foreground">
-                  {orderType === "new"
-                    ? (es ? "Cuéntanos sobre tu negocio — colores, estilo, logo" : "Tell us about your business — colors, style, logo")
-                    : (es ? "¿Alguna actualización al diseño anterior? (opcional)" : "Any update to the previous design? (optional)")}
+                  {es ? "Algo más que debamos saber (opcional)" : "Anything else we should know (optional)"}
                 </Label>
                 <Textarea
                   id="details"
@@ -194,6 +344,18 @@ export function BusinessCardConfigurator() {
                 <span className="text-muted-foreground">{es ? "Cantidad" : "Quantity"}</span>
                 <span className="font-medium">{quantity}</span>
               </div>
+              {designSource && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">{es ? "Diseño" : "Design"}</span>
+                  <span className="font-medium">
+                    {designSource === "final"
+                      ? (es ? "Archivo subido" : "File uploaded")
+                      : designSource === "reference"
+                      ? (es ? "Referencia" : "Reference")
+                      : (es ? "A coordinar" : "To coordinate")}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2 border-t border-border pt-4">

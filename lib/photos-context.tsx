@@ -5,6 +5,7 @@ import { createContext, useContext, useState, type ReactNode } from "react"
 interface PhotosContextType {
   photos: File[]
   setPhotos: (files: File[]) => void
+  addPhotos: (files: File[]) => void
   clearPhotos: () => void
 }
 
@@ -14,10 +15,11 @@ export function PhotosProvider({ children }: { children: ReactNode }) {
   const [photos, setPhotosState] = useState<File[]>([])
 
   const setPhotos = (files: File[]) => setPhotosState(files)
+  const addPhotos = (files: File[]) => setPhotosState((prev) => [...prev, ...files])
   const clearPhotos = () => setPhotosState([])
 
   return (
-    <PhotosContext.Provider value={{ photos, setPhotos, clearPhotos }}>
+    <PhotosContext.Provider value={{ photos, setPhotos, addPhotos, clearPhotos }}>
       {children}
     </PhotosContext.Provider>
   )

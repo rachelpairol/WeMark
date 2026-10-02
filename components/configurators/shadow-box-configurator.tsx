@@ -38,7 +38,7 @@ const MAX_PHOTOS = 15
 
 export function ShadowBoxConfigurator() {
   const { addToCart } = useCart()
-  const { setPhotos: savePhotosToContext } = usePhotos()
+  const { addPhotos } = usePhotos()
   const { locale } = useI18n()
   const router = useRouter()
   const es = locale === "es"
@@ -88,7 +88,7 @@ export function ShadowBoxConfigurator() {
       ].filter(Boolean).join(" · ")
 
       // Save photos to context — Drive upload happens at checkout with client name
-      savePhotosToContext(photoFiles)
+      addPhotos(photoFiles)
 
       addToCart(
         {
