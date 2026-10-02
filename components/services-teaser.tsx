@@ -36,7 +36,7 @@ export function ServicesTeaser() {
             </p>
           </div>
           <Button asChild variant="outline" className="gap-2 border-primary/30 font-semibold hover:bg-primary/10 hover:text-primary shrink-0">
-            <Link href="/services">
+            <Link href="/shop">
               {es ? "Ver todos los servicios" : "View all services"}
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -47,7 +47,7 @@ export function ServicesTeaser() {
           {servicesList.map(({ icon: Icon, nameEn, nameEs }) => (
             <Link
               key={nameEn}
-              href="/services"
+              href="/shop"
               className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">

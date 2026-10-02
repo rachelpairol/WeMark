@@ -54,7 +54,7 @@ export function FeaturedProducts() {
               </Link>
             </Button>
             <Button asChild variant="outline" className="gap-2 border-primary/30 bg-transparent font-semibold hover:bg-primary/10 hover:text-primary">
-              <Link href="/services">
+              <Link href="/shop">
                 {es ? "Ver servicios" : "Our services"}
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -106,7 +106,7 @@ export function FeaturedProducts() {
             const s = item.data
             return (
               <div key={s.id} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-[4px] hover:shadow-xl">
-                <Link href="/services" className="relative aspect-[4/4.2] overflow-hidden bg-muted">
+                <Link href="/shop" className="relative aspect-[4/4.2] overflow-hidden bg-muted">
                   <Image
                     src={s.image}
                     alt={es ? s.nameEs : s.name}
@@ -124,7 +124,7 @@ export function FeaturedProducts() {
                   <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
                     {es ? "Servicio" : "Service"}
                   </span>
-                  <Link href="/services">
+                  <Link href="/shop">
                     <h3 className="mt-3 font-serif text-xl font-semibold leading-snug text-foreground transition-colors hover:text-primary">
                       {es ? s.nameEs : s.name}
                     </h3>
@@ -137,7 +137,7 @@ export function FeaturedProducts() {
                       {es ? "Precio según pedido" : "Price on request"}
                     </span>
                     <Button asChild size="sm" className="gap-2 font-semibold transition-all duration-200 hover:-translate-y-[2px] hover:shadow-lg">
-                      <Link href="/services">
+                      <Link href="/shop">
                         <MessageCircle className="h-4 w-4" />
                         {es ? "Cotizar" : "Get quote"}
                       </Link>
