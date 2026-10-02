@@ -8,8 +8,8 @@ export interface CategoryEntry {
 
 export const categoryOrder: CategoryEntry[] = [
   { id: "shadow-boxes", kind: "catalog" },
-  { id: "custom-tshirts", kind: "quote", serviceId: "custom-tshirts" },
-  { id: "surprise-gifts", kind: "quote", serviceId: "surprise-gifts" },
+  { id: "custom-tshirts", kind: "configurator", serviceId: "custom-tshirts" },
+  { id: "surprise-gifts", kind: "configurator", serviceId: "surprise-gifts" },
   { id: "business-cards", kind: "quote", serviceId: "business-cards" },
   { id: "gift-boxes", kind: "quote", serviceId: "gift-boxes" },
   { id: "logo-printing", kind: "quote", serviceId: "logo-printing" },

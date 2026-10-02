@@ -12,6 +12,11 @@ import { categoryOrder, shadowBoxCategory } from "@/lib/categories"
 import { useI18n } from "@/lib/i18n"
 import { Heart } from "lucide-react"
 
+const CONFIGURATOR_PRICE_FROM: Record<string, number> = {
+  "custom-tshirts": 30,
+  "surprise-gifts": 60,
+}
+
 export default function ShopPage() {
   const { locale } = useI18n()
   const es = locale === "es"
@@ -92,10 +97,15 @@ export default function ShopPage() {
                 const service = services.find((s) => s.id === entry.serviceId)
                 if (!service) return null
 
+                const isConfigurator = entry.kind === "configurator"
+                const priceFrom = CONFIGURATOR_PRICE_FROM[entry.id]
+
                 return (
                   <div
                     key={entry.id}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    className={`group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                      isConfigurator ? "border-primary/30" : "border-border"
+                    }`}
                   >
                     <div className="relative aspect-[4/3] overflow-hidden bg-secondary/20">
                       <Image
@@ -109,6 +119,11 @@ export default function ShopPage() {
                           target.src = "/Images/mom-shadow-box-roses.jpeg"
                         }}
                       />
+                      {isConfigurator && priceFrom && (
+                        <span className="absolute top-3 right-3 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
+                          {es ? `Desde $${priceFrom}` : `From $${priceFrom}`}
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex flex-1 flex-col p-6">
@@ -128,9 +143,17 @@ export default function ShopPage() {
                         ))}
                       </ul>
 
-                      <Button className="mt-6 w-full" onClick={() => setSelected(service)}>
-                        {es ? "Solicitar cotización" : "Request a quote"}
-                      </Button>
+                      {isConfigurator ? (
+                        <Button asChild className="mt-6 w-full">
+                          <Link href={`/customize/${entry.id}`}>
+                            {es ? "Personalizar" : "Customize"}
+                          </Link>
+                        </Button>
+                      ) : (
+                        <Button className="mt-6 w-full" onClick={() => setSelected(service)}>
+                          {es ? "Solicitar cotización" : "Request a quote"}
+                        </Button>
+                      )}
                     </div>
                   </div>
                 )
