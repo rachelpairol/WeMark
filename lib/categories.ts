@@ -10,7 +10,7 @@ export const categoryOrder: CategoryEntry[] = [
   { id: "shadow-boxes", kind: "catalog" },
   { id: "custom-tshirts", kind: "configurator", serviceId: "custom-tshirts" },
   { id: "surprise-gifts", kind: "configurator", serviceId: "surprise-gifts" },
-  { id: "business-cards", kind: "quote", serviceId: "business-cards" },
+  { id: "business-cards", kind: "configurator", serviceId: "business-cards" },
   { id: "gift-boxes", kind: "quote", serviceId: "gift-boxes" },
   { id: "logo-printing", kind: "quote", serviceId: "logo-printing" },
   { id: "stationery", kind: "quote", serviceId: "stationery" },

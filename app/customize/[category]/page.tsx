@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer"
 import { ShadowBoxConfigurator } from "@/components/configurators/shadow-box-configurator"
 import { TshirtConfigurator } from "@/components/configurators/tshirt-configurator"
 import { SurpriseGiftConfigurator } from "@/components/configurators/surprise-gift-configurator"
+import { BusinessCardConfigurator } from "@/components/configurators/business-card-configurator"
 
 const CONFIGURATORS = {
   "shadow-boxes": {
@@ -29,6 +30,14 @@ const CONFIGURATORS = {
     metaTitle: "Customize Your Surprise Gift | WeMark",
     metaDescription: "Build your personalized surprise gift — balloons, plush toys and breakfast trays.",
     Component: SurpriseGiftConfigurator,
+  },
+  "business-cards": {
+    badge: "Tarjetas de Presentación",
+    title: "Customize Yours",
+    description: "Choose first time or reprint, pick a quantity and tell us about your business.",
+    metaTitle: "Customize Your Business Cards | WeMark",
+    metaDescription: "Order personalized business cards — design included on first orders, cheaper reprints after.",
+    Component: BusinessCardConfigurator,
   },
 } as const
 
