@@ -4,9 +4,12 @@ import Link from "next/link"
 import Image from "next/image"
 import { Instagram, Mail, Phone } from "lucide-react"
 import { useI18n } from "@/lib/i18n"
+import { categoryOrder, shadowBoxCategory } from "@/lib/categories"
+import { services } from "@/lib/services"
 
 export function Footer() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+  const es = locale === "es"
 
   return (
     <footer className="border-t border-border bg-secondary/30">
@@ -55,30 +58,23 @@ export function Footer() {
             <h3 className="font-serif text-lg font-semibold text-foreground mb-4">{t("footer.categories")}</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/shop?category=Mother's Day" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {t("category.Mother's Day")}
+                <Link href="/shop/shadow-boxes" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {es ? shadowBoxCategory.nameEs : shadowBoxCategory.name}
                 </Link>
               </li>
-              <li>
-                <Link href="/shop?category=Valentine's Day" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {t("category.Valentine's Day")}
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop?category=Anniversary" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {t("category.Anniversary")}
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop?category=Birthday" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {t("category.Birthday")}
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop?category=Baby Shower" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Baby Shower
-                </Link>
-              </li>
+              {categoryOrder
+                .filter((entry) => entry.kind === "quote")
+                .map((entry) => {
+                  const service = services.find((s) => s.id === entry.serviceId)
+                  if (!service) return null
+                  return (
+                    <li key={entry.id}>
+                      <Link href="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                        {es ? service.nameEs : service.name}
+                      </Link>
+                    </li>
+                  )
+                })}
             </ul>
           </div>
 

@@ -45,10 +45,6 @@ export function Header() {
             {t("nav.reviews")}
           </Link>
 
-          <Link href="/services" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
-            {locale === "es" ? "Servicios" : "Services"}
-          </Link>
-
           <Link href="/#contact" className="font-semibold text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
             {t("nav.contact")}
           </Link>

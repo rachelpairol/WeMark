@@ -45,18 +45,10 @@ const tools = [
   {
     icon: ShoppingBag,
     title: "Shop (live site)",
-    description: "View the public shop as a customer.",
+    description: "View the public shop and quote forms as a customer.",
     href: "/shop",
     internal: true,
     color: "bg-green-50 text-green-600 dark:bg-green-950 dark:text-green-400",
-  },
-  {
-    icon: Package,
-    title: "Services page",
-    description: "View and test the services & quote forms.",
-    href: "/services",
-    internal: true,
-    color: "bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-400",
   },
 ]
 
