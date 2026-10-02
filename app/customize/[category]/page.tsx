@@ -32,11 +32,11 @@ const CONFIGURATORS = {
     Component: SurpriseGiftConfigurator,
   },
   "business-cards": {
-    badge: "Tarjetas de Presentación",
-    title: "Customize Yours",
-    description: "Choose first time or reprint, pick a quantity and tell us about your business.",
-    metaTitle: "Customize Your Business Cards | WeMark",
-    metaDescription: "Order personalized business cards — design included on first orders, cheaper reprints after.",
+    badge: "Business Cards",
+    title: "Create Your Business Cards",
+    description: "Choose your card style, quantity and design options to create the perfect cards for your business.",
+    metaTitle: "Create Your Business Cards | WeMark",
+    metaDescription: "Choose your card style, quantity and design options to create the perfect business cards for your brand.",
     Component: BusinessCardConfigurator,
   },
 } as const

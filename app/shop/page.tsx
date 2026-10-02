@@ -15,7 +15,6 @@ import { Heart } from "lucide-react"
 const CONFIGURATOR_PRICE_FROM: Record<string, number> = {
   "custom-tshirts": 30,
   "surprise-gifts": 60,
-  "business-cards": 65,
 }
 
 export default function ShopPage() {
