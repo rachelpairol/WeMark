@@ -96,7 +96,7 @@ export function Header() {
 
           {/* CTA */}
           <Link
-            href="/customize"
+            href="/customize/shadow-boxes"
             className="hidden sm:inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-lg"
           >
             {locale === "es" ? "Personaliza el tuyo" : "Customize Yours"}
